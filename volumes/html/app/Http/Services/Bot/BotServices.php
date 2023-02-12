@@ -3,6 +3,7 @@
 namespace App\Http\Services\Bot;
 
 
+use app\Models\DefaultMessage;
 use App\Models\TelegramUser;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -30,23 +31,35 @@ class BotServices
     public function index($webhook)
     {
         $bot = new Client('5820172639:AAGRl8rmqEoO8-nd0rOz-jM3o3I_7G4EZF8');
-        $telegramServices = new TelegramServices;
 
-        $bot->command('start', function ($message) use ($bot, $telegramServices, $webhook) {
+        $startKeybort = new InlineKeyboardMarkup([
+            [
+                ['callback_data' => 'image', 'text' => 'Картинка'],
+                ['callback_data' => 'poetry', 'text' => 'Стишок'],
+            ]
+        ]);
+
+        $bot->command('start', function ($message) use ($bot, $webhook) {
+            $telegramServices = new TelegramServices;
             $telegramServices->create(
                 $webhook['message']['from']['first_name'],
                 $webhook['message']['from']['username'],
                 $webhook['message']['from']['id'],
             );
-            $startKeybort = new InlineKeyboardMarkup([
-                [
-                    ['callback_data' => 'image', 'text' => 'Картинка'],
-                    ['callback_data' => 'poetry', 'text' => 'Стишок'],
-                ]
-            ]);
-            // TODO Добавить в админку все значения сообщений
-            $answer = 'Здравствуйт Танечка, этот бот для тебя';
-            $bot->sendMessage($message->getChat()->getId(), $answer, 'HTML', true, null, $startKeybort);
+
+            /** @var  DefaultMessage $defaultMessage */
+            $defaultMessage = DefaultMessage::query()
+                ->where('code', '=', DefaultMessage::TYPE_START)
+                ->select('message')
+                ->first();
+            $bot->sendMessage(
+                $message->getChat()->getId(),
+                $defaultMessage->getMessage(),
+                'HTML',
+                true,
+                null,
+                $startKeybort
+            );
         });
 
 
