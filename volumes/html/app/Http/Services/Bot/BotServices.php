@@ -2,9 +2,7 @@
 
 namespace App\Http\Services\Bot;
 
-
-use app\Models\DefaultMessage;
-use App\Models\TelegramUser;
+use App\Models\DefaultMessage;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use TelegramBot\Api\Client;
@@ -16,7 +14,7 @@ use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 class BotServices
 {
 
-    public array $keybort = [
+    public array $keyboard = [
         [
             ['callback_data' => 'image', 'text' => 'Картинка'],
             ['callback_data' => 'poetry', 'text' => 'Стишок'],
@@ -28,18 +26,13 @@ class BotServices
      * @param $webhook
      * @return void
      */
-    public function index($webhook)
+    public function index($webhook): void
     {
         $bot = new Client('5820172639:AAGRl8rmqEoO8-nd0rOz-jM3o3I_7G4EZF8');
 
-        $startKeybort = new InlineKeyboardMarkup([
-            [
-                ['callback_data' => 'image', 'text' => 'Картинка'],
-                ['callback_data' => 'poetry', 'text' => 'Стишок'],
-            ]
-        ]);
+        $startKeyboard = new InlineKeyboardMarkup($this->keyboard);
 
-        $bot->command('start', function ($message) use ($bot, $webhook) {
+        $bot->command('start', function ($message) use ($bot, $webhook, $startKeyboard) {
             $telegramServices = new TelegramServices;
             $telegramServices->create(
                 $webhook['message']['from']['first_name'],
@@ -52,29 +45,24 @@ class BotServices
                 ->where('code', '=', DefaultMessage::TYPE_START)
                 ->select('message')
                 ->first();
+
             $bot->sendMessage(
                 $message->getChat()->getId(),
                 $defaultMessage->getMessage(),
                 'HTML',
                 true,
                 null,
-                $startKeybort
+                $startKeyboard
             );
         });
 
 
-        $bot->on(function ($Update) use ($bot) {
+        $bot->on(function ($Update) use ($bot, $startKeyboard) {
             $callback = $Update->getCallbackQuery();
             $message = $callback->getMessage(); // получаем сообщение
             $cid = $callback->getFrom()->getId(); // уникальный идентификатор chat_id
             $data = $callback->getData(); // название команды переданный с кнопки у сообщения
 
-            $startKeyboard = new InlineKeyboardMarkup([
-                [
-                    ['callback_data' => 'image', 'text' => 'Картинка'],
-                    ['callback_data' => 'poetry', 'text' => 'Стишок'],
-                ]
-            ]);
             if ($data == "poetry") {
                 $poetry = new PoetryServices();
                 $poetry->sendPoetry($bot, $message, $startKeyboard);

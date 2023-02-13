@@ -2,13 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\Poetry;
+use App\MoonShine\Resources\DefaultMessageResource;
 use App\MoonShine\Resources\ImageResource;
 use App\MoonShine\Resources\PoetryResource;
 use Illuminate\Support\ServiceProvider;
 use Leeto\MoonShine\MoonShine;
-use Leeto\MoonShine\Menu\MenuGroup;
-use Leeto\MoonShine\Menu\MenuItem;
 use Leeto\MoonShine\Resources\MoonShineUserResource;
 use Leeto\MoonShine\Resources\MoonShineUserRoleResource;
 
@@ -21,6 +19,7 @@ class MoonShineServiceProvider extends ServiceProvider
             MoonShineUserRoleResource::class, // Системный раздел с ролями администраторов
             PoetryResource::class, // Наш новый раздел
             ImageResource::class, // Наш новый раздел
+            DefaultMessageResource::class, // Наш новый раздел
         ]);
     }
 }

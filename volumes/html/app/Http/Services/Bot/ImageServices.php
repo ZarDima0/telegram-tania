@@ -2,7 +2,7 @@
 
 namespace App\Http\Services\Bot;
 
-use app\Models\DefaultMessage;
+use App\Models\DefaultMessage;
 use App\Models\Image;
 use Exception;
 use Illuminate\Support\Facades\Log;
