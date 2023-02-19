@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Bot;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Bot\Webhook;
 use App\Http\Services\Bot\BotServices;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BotController extends Controller
 {
@@ -16,6 +16,6 @@ class BotController extends Controller
      */
     public function index(Webhook $webhook, BotServices $botServices)
     {
-        return $botServices->index($webhook->getReq());
+        return $botServices->index(telegramDTO: $webhook->getTelegramWebhook());
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Bot;
 
+use App\DTO\UserTelegramDTO;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class Webhook extends FormRequest
 {
@@ -28,11 +30,11 @@ class Webhook extends FormRequest
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function getReq()
+    public function getTelegramWebhook()
     {
-        return $this->request->all();
+        return (new UserTelegramDTO())
+            ->setId($this->input('callback_query.message.from.id'))
+            ->setUserName($this->input('callback_query.message.from.username'))
+            ->setFirstName($this->input('callback_query.message.from.first_name'));
     }
 }

@@ -2,25 +2,23 @@
 
 namespace App\Http\Services\Bot;
 
+use App\DTO\UserTelegramDTO;
 use App\Models\TelegramUser;
 
 class TelegramServices
 {
     /**
-     * @param string $firstName
-     * @param string $userName
-     * @param int $intUser
+     * @param UserTelegramDTO $telegramDTO
      * @return void
      */
-    public function create(string $firstName, string $userName, int $intUser): void
+    public function create(UserTelegramDTO $telegramDTO): void
     {
-
-        if (!$this->checkTelegramUser($userName)) {
+        if (!$this->checkTelegramUser($telegramDTO->getUserName())) {
             TelegramUser::query()
                 ->create([
-                    'user_name' => $userName,
-                    'user_id' => $intUser,
-                    'first_name' => $firstName,
+                    'user_name' => $telegramDTO->getUserName(),
+                    'user_id' => $telegramDTO->getId(),
+                    'first_name' => $telegramDTO->getFirstName(),
                 ]);
         }
     }

@@ -2,13 +2,13 @@
 
 namespace App\Http\Services\Bot;
 
-use App\Models\DefaultMessage;
+use App\DTO\UserTelegramDTO;
+use App\Http\Services\SendMessageBot\ImageServices;
+use App\Http\Services\SendMessageBot\PoetryServices;
+use App\Http\Services\SendMessageBot\StartServices;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use TelegramBot\Api\Client;
-use TelegramBot\Api\Types\InputMedia\ArrayOfInputMedia;
-use TelegramBot\Api\Types\InputMedia\InputMediaPhoto;
-use TelegramBot\Api\Types\ReplyKeyboardMarkup;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 
 class BotServices
@@ -23,37 +23,19 @@ class BotServices
 
 
     /**
-     * @param $webhook
+     * @param UserTelegramDTO $telegramDTO
      * @return void
      */
-    public function index($webhook): void
+    public function index(UserTelegramDTO $telegramDTO): void
     {
-        $bot = new Client('5820172639:AAGRl8rmqEoO8-nd0rOz-jM3o3I_7G4EZF8');
-
+        $bot = new Client(config('app.telegram_token'));
         $startKeyboard = new InlineKeyboardMarkup($this->keyboard);
 
-        $bot->command('start', function ($message) use ($bot, $webhook, $startKeyboard) {
+        $bot->command('start', function ($message) use ($bot, $telegramDTO, $startKeyboard) {
             $telegramServices = new TelegramServices;
-            $telegramServices->create(
-                $webhook['message']['from']['first_name'],
-                $webhook['message']['from']['username'],
-                $webhook['message']['from']['id'],
-            );
+            $telegramServices->create($telegramDTO);
 
-            /** @var  DefaultMessage $defaultMessage */
-            $defaultMessage = DefaultMessage::query()
-                ->where('code', '=', DefaultMessage::TYPE_START)
-                ->select('message')
-                ->first();
-
-            $bot->sendMessage(
-                $message->getChat()->getId(),
-                $defaultMessage->getMessage(),
-                'HTML',
-                true,
-                null,
-                $startKeyboard
-            );
+            (new StartServices())->sendMessage($bot, $message, $startKeyboard);
         });
 
 
@@ -65,11 +47,11 @@ class BotServices
 
             if ($data == "poetry") {
                 $poetry = new PoetryServices();
-                $poetry->sendPoetry($bot, $message, $startKeyboard);
+                $poetry->sendMessage($bot, $message, $startKeyboard);
             }
             if ($data == "image") {
                 $poetry = new ImageServices();
-                $poetry->sendImage($bot, $message, $startKeyboard);
+                $poetry->sendMessage($bot, $message, $startKeyboard);
             }
 
             if (empty($data)) return true; else return false;
@@ -85,7 +67,6 @@ class BotServices
                 return false;
             }
         });
-
 
         if (!empty($bot->getRawBody())) {
             try {

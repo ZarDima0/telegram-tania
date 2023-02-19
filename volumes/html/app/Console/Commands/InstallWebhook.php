@@ -30,7 +30,6 @@ class InstallWebhook extends Command
     public function handle()
     {
         $res = Http::get(self::API_TELEGRAM . config('app.telegram_token') . '/deleteWebhook');
-
         if ($res->status() == '200') {
             $installWebhook =
                 Http::get(
@@ -40,7 +39,7 @@ class InstallWebhook extends Command
                     $this->argument('url') .
                     '/api/bot/webhook'
                 );
-            return json_decode($installWebhook->body());
+            dd($installWebhook->body());
         }
         return Command::SUCCESS;
     }

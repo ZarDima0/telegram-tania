@@ -1,21 +1,15 @@
 <?php
 
-namespace App\Http\Services\Bot;
+namespace App\Http\Services\SendMessageBot;
 
 use App\Models\DefaultMessage;
 use App\Models\Poetry;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
-class PoetryServices
+class PoetryServices implements SendMessageBotInterface
 {
-    /**
-     * @param $bot
-     * @param $message
-     * @param $keyboard
-     * @return void
-     */
-    public function sendPoetry($bot, $message, $keyboard): void
+    public function sendMessage($bot, $message, $keyboard)
     {
         try {
             /** @var  Poetry $poetry */
@@ -29,11 +23,11 @@ class PoetryServices
                     ->select('message')
                     ->first();
                 $bot->sendMessage($message->getChat()->getId(), $defaultMessage->getMessage(), 'HTML', true, null, $keyboard);
+            } else {
+                $poetry->setIsSend(true);
+                $poetry->save();
+                $bot->sendMessage($message->getChat()->getId(), $poetry->getPoetry(), 'HTML', true, null, $keyboard);
             }
-            $poetry->setIsSend(true);
-            $poetry->save();
-
-            $bot->sendMessage($message->getChat()->getId(), $poetry->getPoetry(), 'HTML', true, null, $keyboard);
         } catch (Exception $e) {
             /** @var  DefaultMessage $defaultMessage */
             $defaultMessage = DefaultMessage::query()
