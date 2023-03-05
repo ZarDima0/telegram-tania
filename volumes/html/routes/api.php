@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Bot\BotController;
+use app\Http\Controllers\Bot\BotController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

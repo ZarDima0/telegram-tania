@@ -1,37 +1,38 @@
 <?php
 
-namespace app\DTO;
+namespace App\DTO;
 
 class UserTelegramDTO
 {
 
     /**
-     * @var string
+     * @var string|null
      */
-     private string $firstName;
+     private string|null $firstName;
 
     /**
      * @var string
      */
-    private string $userName;
+    private string|null $userName;
 
     /**
-     * @var int
+     * @var int|null
      */
-    private int $id;
+    private int|null $id;
 
     /** ``
-     * @return string
+     * @return string|null
      */
-    public function getFirstName(): string
+    public function getFirstName(): string|null
     {
         return $this->firstName;
     }
 
     /**
-     * @param string $firstName
+     * @param string|null $firstName
+     * @return UserTelegramDTO
      */
-    public function setFirstName(string $firstName): UserTelegramDTO
+    public function setFirstName(string|null $firstName): UserTelegramDTO
     {
         $this->firstName = $firstName;
 
@@ -39,18 +40,18 @@ class UserTelegramDTO
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUserName(): string
+    public function getUserName(): string|null
     {
         return $this->userName;
     }
 
     /**
-     * @param string $userName
+     * @param string|null $userName
      * @return UserTelegramDTO
      */
-    public function setUserName(string $userName): UserTelegramDTO
+    public function setUserName(string|null $userName): UserTelegramDTO
     {
         $this->userName = $userName;
 
@@ -58,18 +59,18 @@ class UserTelegramDTO
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): int|null
     {
         return $this->id;
     }
 
     /**
-     * @param int $id
+     * @param int|null $id
      * @return UserTelegramDTO
      */
-    public function setId(int $id): UserTelegramDTO
+    public function setId(int|null $id): UserTelegramDTO
     {
         $this->id = $id;
 

@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\Jobs\ProcessSendMessageTime;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use TelegramBot\Api\Client;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->job(new ProcessSendMessageTime)->everyMinute();
     }
 
     /**

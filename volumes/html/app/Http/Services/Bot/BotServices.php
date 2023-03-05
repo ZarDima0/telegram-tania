@@ -13,6 +13,15 @@ use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 
 class BotServices
 {
+    /**
+     * @var Client
+     */
+    private Client $bot;
+
+    public function __construct(Client $client)
+    {
+        $this->bot = $client;
+    }
 
     public array $keyboard = [
         [
@@ -28,7 +37,8 @@ class BotServices
      */
     public function index(UserTelegramDTO $telegramDTO): void
     {
-        $bot = new Client(config('app.telegram_token'));
+        $bot = $this->bot;
+
         $startKeyboard = new InlineKeyboardMarkup($this->keyboard);
 
         $bot->command('start', function ($message) use ($bot, $telegramDTO, $startKeyboard) {
