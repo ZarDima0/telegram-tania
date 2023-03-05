@@ -21,7 +21,6 @@ class MoonShineServiceProvider extends ServiceProvider
             PoetryResource::class, // Наш новый раздел
             ImageResource::class, // Наш новый раздел
             DefaultMessageResource::class, // Наш новый раздел
-            TelegramUserResource::class, // Наш новый раздел
         ]);
     }
 }

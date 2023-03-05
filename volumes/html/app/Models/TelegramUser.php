@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +11,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $user_id
  * @property string $first_name
  * @property boolean $is_notifications
+ * @property Carbon $time
+ * @property boolean $is_poetry_send
+ * @property boolean $is_image_send
  */
 class TelegramUser extends Model
 {
@@ -76,7 +80,7 @@ class TelegramUser extends Model
     /**
      * @return bool
      */
-    public function isIsNotifications(): bool
+    public function isNotifications(): bool
     {
         return $this->is_notifications;
     }
@@ -88,6 +92,63 @@ class TelegramUser extends Model
     public function setIsNotifications(bool $is_notifications): TelegramUser
     {
         $this->is_notifications = $is_notifications;
+
+        return $this;
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function getTime(): Carbon
+    {
+        return $this->time;
+    }
+
+    /**
+     * @param Carbon $time
+     * @return TelegramUser
+     */
+    public function setTime(Carbon $time): TelegramUser
+    {
+        $this->time = $time;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPoetrySend(): bool
+    {
+        return $this->is_poetry_send;
+    }
+
+    /**
+     * @param bool $is_poetry_send
+     * @return TelegramUser
+     */
+    public function setIsPoetrySend(bool $is_poetry_send): TelegramUser
+    {
+        $this->is_poetry_send = $is_poetry_send;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isImageSend(): bool
+    {
+        return $this->is_image_send;
+    }
+
+    /**
+     * @param bool $is_image_send
+     * @return TelegramUser
+     */
+    public function setIsImageSend(bool $is_image_send): TelegramUser
+    {
+        $this->is_image_send = $is_image_send;
 
         return $this;
     }

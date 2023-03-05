@@ -41,7 +41,7 @@ class ProcessSendMessageTime implements ShouldQueue
 
         $telegramUsers = TelegramUser::query()->where('is_notifications', '=', true)->get();
 
-        if ($telegramUsers->isNotEmpty()) {
+        if (!$telegramUsers->isNotEmpty()) {
             $bot->sendMessage('308914169', 'Пользователей у которых включены уведомления 0');
         }
 
