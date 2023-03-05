@@ -1,29 +1,30 @@
 <?php
 
-namespace app\MoonShine\Resources;
+namespace App\MoonShine\Resources;
 
-use App\Models\DefaultMessage;
 use Illuminate\Database\Eloquent\Model;
 
-use Leeto\MoonShine\Fields\Image as ImageMake;
 use Leeto\MoonShine\Fields\SwitchBoolean;
 use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Fields\ID;
 use Leeto\MoonShine\Actions\FiltersAction;
 
-class DefaultMessageResource extends Resource
+class TelegramUserResource extends Resource
 {
-    public static string $model = DefaultMessage::class;
+    public static string $model = 'App\Models\TelegramUser';
 
-    public static string $title = 'Ответы';
+    public static string $title = 'TelegramUsers';
 
     public function fields(): array
     {
         return [
             ID::make()->sortable(),
-            Text::make('code', 'code')->sortable(),
-            Text::make('Сообщение', 'message')->sortable(),
+            Text::make('ID Telegram', 'user_id')->sortable(),
+            Text::make('first_name', 'first_name')->sortable(),
+            SwitchBoolean::make('Уведомления', 'is_notifications')
+                ->onValue(1)
+                ->offValue(0)
         ];
     }
 

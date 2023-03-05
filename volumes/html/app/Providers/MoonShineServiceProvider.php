@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\MoonShine\Resources\DefaultMessageResource;
 use App\MoonShine\Resources\ImageResource;
 use App\MoonShine\Resources\PoetryResource;
+use App\MoonShine\Resources\TelegramUserResource;
 use Illuminate\Support\ServiceProvider;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Resources\MoonShineUserResource;
@@ -20,6 +21,7 @@ class MoonShineServiceProvider extends ServiceProvider
             PoetryResource::class, // Наш новый раздел
             ImageResource::class, // Наш новый раздел
             DefaultMessageResource::class, // Наш новый раздел
+            TelegramUserResource::class, // Наш новый раздел
         ]);
     }
 }

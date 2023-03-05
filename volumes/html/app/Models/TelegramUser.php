@@ -4,18 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 /**
  * @property integer $id
  * @property integer $user_id
  * @property string $first_name
+ * @property boolean $is_notifications
  */
 class TelegramUser extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
-    
+
     protected $table = 'telegram_user';
+
     /**
      * @return int
      */
@@ -66,6 +69,25 @@ class TelegramUser extends Model
     public function setFirstName(string $first_name): TelegramUser
     {
         $this->first_name = $first_name;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIsNotifications(): bool
+    {
+        return $this->is_notifications;
+    }
+
+    /**
+     * @param bool $is_notifications
+     * @return TelegramUser
+     */
+    public function setIsNotifications(bool $is_notifications): TelegramUser
+    {
+        $this->is_notifications = $is_notifications;
 
         return $this;
     }
